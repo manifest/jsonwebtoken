@@ -97,8 +97,8 @@ pub fn sign(signing_input: &str, key: &[u8], algorithm: Algorithm) -> Result<Str
         Algorithm::HS384 => sign_hmac(&digest::SHA384, key, signing_input),
         Algorithm::HS512 => sign_hmac(&digest::SHA512, key, signing_input),
 
-        Algorithm::ES256 => sign_ecdsa(&signature::ECDSA_P256_SHA256_FIXED_SIGNING, key, signing_input),
-        Algorithm::ES384 => sign_ecdsa(&signature::ECDSA_P384_SHA384_FIXED_SIGNING, key, signing_input),
+        Algorithm::ES256 => sign_ecdsa(&signature::ECDSA_P256_SHA256_ASN1_SIGNING, key, signing_input),
+        Algorithm::ES384 => sign_ecdsa(&signature::ECDSA_P384_SHA384_ASN1_SIGNING, key, signing_input),
 
         Algorithm::RS256 => sign_rsa(&signature::RSA_PKCS1_SHA256, key, signing_input),
         Algorithm::RS384 => sign_rsa(&signature::RSA_PKCS1_SHA384, key, signing_input),
@@ -144,10 +144,10 @@ pub fn verify(
             Ok(verify_slices_are_equal(signature.as_ref(), signed.as_ref()).is_ok())
         }
         Algorithm::ES256 => {
-            verify_ring(&signature::ECDSA_P256_SHA256_FIXED, signature, signing_input, key)
+            verify_ring(&signature::ECDSA_P256_SHA256_ASN1, signature, signing_input, key)
         }
         Algorithm::ES384 => {
-            verify_ring(&signature::ECDSA_P384_SHA384_FIXED, signature, signing_input, key)
+            verify_ring(&signature::ECDSA_P384_SHA384_ASN1, signature, signing_input, key)
         }
         Algorithm::RS256 => {
             verify_ring(&signature::RSA_PKCS1_2048_8192_SHA256, signature, signing_input, key)
